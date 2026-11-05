@@ -28,7 +28,7 @@ class DataStream():
                       )
 
     def print_processors_stats(self) -> None:
-        print("== DataStream statistics ==")
+        print("\n== DataStream statistics ==")
 
         if not self.processors:
             print("No processor found, no data")
