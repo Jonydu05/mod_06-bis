@@ -6,6 +6,7 @@ class DataProcessor(ABC):
     def __init__(self) -> None:
         self._storage: list[str] = []
         self._rank_counter: int = 0
+        self._total_processed: int = 0
 
     @abstractmethod
     def validate(self, data: Any) -> bool:
@@ -24,6 +25,14 @@ class DataProcessor(ABC):
         self._rank_counter += 1
         return current_rank, data_item
 
+    @property
+    def total_processed(self) -> int:
+        return self._total_processed
+
+    @property
+    def remaining_count(self) -> int:
+        return len(self._storage)
+
 
 class NumericProcessor(DataProcessor):
     def validate(self, data: Any) -> bool:
@@ -40,6 +49,7 @@ class NumericProcessor(DataProcessor):
         items = data if isinstance(data, list) else [data]
         for item in items:
             self._storage.append(str(item))
+            self._total_processed += 1
 
 
 class TextProcessor(DataProcessor):
@@ -57,6 +67,7 @@ class TextProcessor(DataProcessor):
         items = data if isinstance(data, list) else [data]
         for item in items:
             self._storage.append(item)
+            self._total_processed += 1
 
 
 class LogProcessor(DataProcessor):
@@ -82,6 +93,7 @@ class LogProcessor(DataProcessor):
             msg = item.get("log_message", "")
             log_str = f"{level}: {msg}"
             self._storage.append(log_str)
+            self._total_processed += 1
 
 
 def main() -> None:
@@ -93,7 +105,7 @@ def main() -> None:
 
     try:
         print("Test invalid ingestion of string 'foo' without validation:")
-        num_proc.ingest("foo") 
+        num_proc.ingest("foo")
     except ValueError as e:
         print(f"Got exception: {e}")
 
