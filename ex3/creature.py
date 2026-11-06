@@ -12,3 +12,16 @@ class Creature(ABC):
 
     def describe(self) -> str:
         return f"{self.name} is a {self.type} type Creature"
+
+
+class TransformCapability(ABC):
+    def __init__(self) -> None:
+        self.is_transformed: bool = False
+
+    @abstractmethod
+    def transform(self) -> str:
+        pass
+
+    @abstractmethod
+    def revert(self) -> str:
+        pass

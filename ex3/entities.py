@@ -1,5 +1,4 @@
-from .creature import Creature
-from .capability import TransformCapability
+from .creature import Creature, TransformCapability
 
 
 class Flameling(Creature):
